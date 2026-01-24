@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Liberty Web – Calculator</title>
+<title>Liberty Web</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -11,134 +11,129 @@
     font-family: Arial, Helvetica, sans-serif;
     background: #f3f4f6;
     color: #111;
+  }
+
+  /* Top bar */
+  .topbar {
+    padding: 20px 30px;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    height: 100vh;
   }
 
-  /* Home Button */
-  .home-btn {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    text-decoration: none;
-    font-size: 14px;
-    padding: 8px 14px;
-    border-radius: 20px;
-    background: #ffffff;
-    border: 1px solid #d1d5db;
-    color: #111;
-  }
-
-  .home-btn:hover {
-    background: #e5e7eb;
-  }
-
-  /* Calculator */
-  .calculator {
-    width: 420px;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-    padding: 20px;
-  }
-
-  .display {
-    height: 90px;
-    font-size: 38px;
-    padding: 15px;
-    text-align: right;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    overflow-x: auto;
-  }
-
-  .buttons {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-  }
-
-  button {
-    height: 70px;
+  .logo {
     font-size: 22px;
-    border-radius: 10px;
-    border: 1px solid #d1d5db;
-    background: #f9fafb;
-    cursor: pointer;
+    font-weight: bold;
   }
 
-  button:hover {
-    background: #e5e7eb;
+  /* Main container */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px;
   }
 
-  .equals {
-    grid-column: span 2;
-    background: #e0e7ff;
-    border-color: #c7d2fe;
+  .hero {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+    margin-bottom: 40px;
   }
 
-  .clear {
-    grid-column: span 2;
-    background: #fee2e2;
-    border-color: #fecaca;
+  .hero h1 {
+    margin-top: 0;
+    font-size: 36px;
+  }
+
+  .hero p {
+    font-size: 18px;
+    color: #444;
+  }
+
+  /* Cards */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+  }
+
+  .card {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 25px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+    text-decoration: none;
+    color: #111;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.12);
+  }
+
+  .card h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
+
+  .card p {
+    color: #555;
+    font-size: 15px;
+  }
+
+  footer {
+    text-align: center;
+    font-size: 12px;
+    color: #6b7280;
+    padding: 40px 20px;
   }
 </style>
 </head>
 
 <body>
 
-<a href="index.html" class="home-btn">← Home</a>
-
-<div class="calculator">
-  <div id="display" class="display"></div>
-
-  <div class="buttons">
-    <button onclick="press('7')">7</button>
-    <button onclick="press('8')">8</button>
-    <button onclick="press('9')">9</button>
-    <button onclick="press('/')">÷</button>
-
-    <button onclick="press('4')">4</button>
-    <button onclick="press('5')">5</button>
-    <button onclick="press('6')">6</button>
-    <button onclick="press('*')">×</button>
-
-    <button onclick="press('1')">1</button>
-    <button onclick="press('2')">2</button>
-    <button onclick="press('3')">3</button>
-    <button onclick="press('-')">−</button>
-
-    <button onclick="press('0')">0</button>
-    <button onclick="press('.')">.</button>
-    <button onclick="press('+')">+</button>
-
-    <button class="equals" onclick="calculate()">=</button>
-    <button class="clear" onclick="clearDisplay()">Clear</button>
-  </div>
+<div class="topbar">
+  <div class="logo">Liberty Web</div>
 </div>
 
-<script>
-  const display = document.getElementById("display");
+<div class="container">
 
-  function press(val) {
-    display.textContent += val;
-  }
+  <div class="hero">
+    <h1>Welcome to Liberty Web</h1>
+    <p>
+      A clean, student-made hub for tools, games, search, and AI.
+    </p>
+  </div>
 
-  function calculate() {
-    try {
-      display.textContent = eval(display.textContent);
-    } catch {
-      display.textContent = "Error";
-    }
-  }
+  <div class="grid">
+    <a href="tools.html" class="card">
+      <h3>🧮 Calculator</h3>
+      <p>Fast, clean, distraction-free calculator.</p>
+    </a>
 
-  function clearDisplay() {
-    display.textContent = "";
-  }
-</script>
+    <a href="games.html" class="card">
+      <h3>🎮 Games</h3>
+      <p>Simple browser games for quick breaks.</p>
+    </a>
+
+    <a href="search.html" class="card">
+      <h3>🔍 Search</h3>
+      <p>Quick access to web search.</p>
+    </a>
+
+    <a href="ai.html" class="card">
+      <h3>🤖 AI Overview</h3>
+      <p>Study help and explanations.</p>
+    </a>
+  </div>
+
+</div>
+
+<footer>
+  Not affiliated with or endorsed by Liberty Baptist Tabernacle.
+</footer>
 
 </body>
 </html>
