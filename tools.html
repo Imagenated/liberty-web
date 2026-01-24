@@ -9,72 +9,88 @@
   body {
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
-    background: #f2f2f2;
-    color: #000;
+    background: #f3f4f6;
+    color: #111;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
   }
 
-  .calculator {
-    width: 340px;
+  /* Home Button */
+  .home-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 8px 14px;
+    border-radius: 20px;
     background: #ffffff;
-    border: 2px solid #000;
+    border: 1px solid #d1d5db;
+    color: #111;
+  }
+
+  .home-btn:hover {
+    background: #e5e7eb;
+  }
+
+  /* Calculator */
+  .calculator {
+    width: 420px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+    padding: 20px;
   }
 
   .display {
-    height: 80px;
-    background: #ffffff;
-    border-bottom: 2px solid #000;
-    font-size: 36px;
+    height: 90px;
+    font-size: 38px;
     padding: 15px;
     text-align: right;
-    box-sizing: border-box;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    margin-bottom: 20px;
     overflow-x: auto;
   }
 
   .buttons {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
   }
 
   button {
     height: 70px;
     font-size: 22px;
-    border: 1px solid #000;
-    background: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    background: #f9fafb;
     cursor: pointer;
   }
 
   button:hover {
-    background: #eaeaea;
-  }
-
-  .operator {
-    background: #000000;
-    color: #ffffff;
-  }
-
-  .operator:hover {
-    background: #111;
+    background: #e5e7eb;
   }
 
   .equals {
     grid-column: span 2;
-    background: #000;
-    color: #fff;
-    font-size: 26px;
+    background: #e0e7ff;
+    border-color: #c7d2fe;
   }
 
   .clear {
     grid-column: span 2;
-    background: #dcdcdc;
+    background: #fee2e2;
+    border-color: #fecaca;
   }
 </style>
 </head>
 
 <body>
+
+<a href="index.html" class="home-btn">← Home</a>
 
 <div class="calculator">
   <div id="display" class="display"></div>
@@ -83,21 +99,21 @@
     <button onclick="press('7')">7</button>
     <button onclick="press('8')">8</button>
     <button onclick="press('9')">9</button>
-    <button class="operator" onclick="press('/')">÷</button>
+    <button onclick="press('/')">÷</button>
 
     <button onclick="press('4')">4</button>
     <button onclick="press('5')">5</button>
     <button onclick="press('6')">6</button>
-    <button class="operator" onclick="press('*')">×</button>
+    <button onclick="press('*')">×</button>
 
     <button onclick="press('1')">1</button>
     <button onclick="press('2')">2</button>
     <button onclick="press('3')">3</button>
-    <button class="operator" onclick="press('-')">−</button>
+    <button onclick="press('-')">−</button>
 
     <button onclick="press('0')">0</button>
     <button onclick="press('.')">.</button>
-    <button class="operator" onclick="press('+')">+</button>
+    <button onclick="press('+')">+</button>
 
     <button class="equals" onclick="calculate()">=</button>
     <button class="clear" onclick="clearDisplay()">Clear</button>
