@@ -1,72 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Liberty Web</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Liberty Web</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
   body {
-    font-family: Arial, sans-serif;
     margin: 0;
-    background: #f5f7fa;
-    color: #1f2933;
-    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f3f4f6;
+    color: #111;
   }
 
-  header {
-    padding: 30px;
+  .container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+  }
+
+  .card {
     background: #ffffff;
-    border-bottom: 1px solid #e5e7eb;
+    border-radius: 18px;
+    padding: 50px 40px;
+    max-width: 520px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
   }
 
   h1 {
-    margin-bottom: 10px;
+    margin-top: 0;
+    font-size: 38px;
   }
 
-  nav a {
-    color: #1f2933;
-    margin: 0 12px;
+  p {
+    font-size: 18px;
+    color: #444;
+    margin-bottom: 35px;
+  }
+
+  .launch-btn {
+    display: inline-block;
     text-decoration: none;
-    font-weight: bold;
+    font-size: 18px;
+    padding: 14px 30px;
+    border-radius: 30px;
+    background: #111827;
+    color: #ffffff;
+    transition: background 0.15s ease, transform 0.15s ease;
   }
 
-  nav a:hover {
-    text-decoration: underline;
-    opacity: 0.8;
-  }
-
-  main {
-    padding: 60px 20px;
+  .launch-btn:hover {
+    background: #000000;
+    transform: translateY(-2px);
   }
 
   footer {
+    margin-top: 40px;
     font-size: 12px;
     color: #6b7280;
-    padding: 30px;
   }
 </style>
-
 </head>
+
 <body>
 
-<header>
-  <h1>Liberty Web</h1>
- <nav>
-  <a href="games.html">Games</a>
-  <a href="tools.html">Tools</a>
-  <a href="search.html">Search</a>
-  <a href="ai.html">AI</a>
-</nav>
-</header>
+<div class="container">
+  <div class="card">
+    <h1>Liberty Web</h1>
+    <p>
+      A clean, student-made hub for tools, games, search, and AI.
+    </p>
 
-<main>
-  <h2>Welcome to Liberty Web</h2>
-  <p>An unofficial student-made hub for games, tools, search, and AI.</p>
-</main>
+    <a href="tools.html" class="launch-btn">
+      Launch Liberty Web
+    </a>
 
-<footer>
-  Not affiliated with or endorsed by Liberty Baptist Tabernacle.
-</footer>
+    <footer>
+      <br>
+      Not affiliated with or endorsed by Liberty Baptist Tabernacle.
+    </footer>
+  </div>
+</div>
 
 </body>
 </html>
