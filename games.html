@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Liberty Web – Flappy</title>
+<title>Liberty Web – Flappy Bird</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -13,18 +13,18 @@
 
   body {
     margin: 0;
-    background: #000;
+    background: #f3f4f6;
     display: flex;
     justify-content: center;
     align-items: center;
     font-family: Arial, Helvetica, sans-serif;
   }
 
+  /* Home button */
   .home-btn {
     position: fixed;
     top: 20px;
     left: 20px;
-    z-index: 10;
     text-decoration: none;
     font-size: 14px;
     padding: 8px 16px;
@@ -32,6 +32,31 @@
     background: #ffffff;
     border: 1px solid #d1d5db;
     color: #111;
+    z-index: 10;
+  }
+
+  .home-btn:hover {
+    background: #e5e7eb;
+  }
+
+  /* Crop container (acts like a mask) */
+  .crop {
+    width: 288px;   /* exact Flappy Bird width */
+    height: 512px;  /* exact Flappy Bird height */
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    background: #000;
+  }
+
+  /* Iframe scaled and positioned */
+  iframe {
+    width: 400px;
+    height: 700px;
+    border: none;
+
+    /* Center the game inside the crop */
+    transform: translate(-56px, -94px);
   }
 </style>
 </head>
@@ -40,202 +65,9 @@
 
 <a href="tools.html" class="home-btn">← Home</a>
 
-<canvas id="game" width="288" height="512"></canvas>
-
-<script>
-const canvas = document.getElementById("game");
-const ctx = canvas.getContext("2d");
-
-const sprite = new Image();
-sprite.src = "flappy.png";
-
-/* === SPRITES === */
-const BIRD = [
-  {x: 3,  y: 491},
-  {x: 37, y: 491},
-  {x: 71, y: 491}
-];
-
-const BG = {x: 0, y: 0, w: 288, h: 512};
-const GROUND = {x: 292, y: 0, w: 336, h: 112};
-
-const PIPE_TOP = {x: 112, y: 646, w: 52, h: 320};
-const PIPE_BOT = {x: 168, y: 646, w: 52, h: 320};
-
-const GET_READY = {x: 295, y: 59, w: 184, h: 50};
-const GAME_OVER = {x: 395, y: 59, w: 192, h: 42};
-
-/* === GAME STATE === */
-let state = "READY";
-let frames = 0;
-let score = 0;
-
-/* === BIRD === */
-const bird = {
-  x: 60,
-  y: 150,
-  vy: 0,
-  gravity: 0.35,
-  jump: 5.5,
-  radius: 12,
-  frame: 0,
-  rotation: 0,
-
-  flap() {
-    this.vy = -this.jump;
-  },
-
-  update() {
-    if (state === "READY") {
-      this.y = 150 + Math.sin(frames / 10) * 5;
-      this.rotation = 0;
-    } else {
-      this.vy += this.gravity;
-      this.y += this.vy;
-
-      if (this.vy >= this.jump) {
-        this.rotation = Math.PI / 2;
-      } else {
-        this.rotation = -0.3;
-      }
-    }
-
-    this.frame = (this.frame + 1) % BIRD.length;
-  },
-
-  draw() {
-    const f = BIRD[this.frame];
-    ctx.save();
-    ctx.translate(this.x, this.y);
-    ctx.rotate(this.rotation);
-    ctx.drawImage(sprite, f.x, f.y, 34, 24, -17, -12, 34, 24);
-    ctx.restore();
-  }
-};
-
-/* === PIPES === */
-const pipes = {
-  list: [],
-  gap: 100,
-
-  update() {
-    if (state !== "PLAY") return;
-
-    if (frames % 100 === 0) {
-      this.list.push({
-        x: canvas.width,
-        y: Math.floor(Math.random() * -150) - 50,
-        passed: false
-      });
-    }
-
-    this.list.forEach(p => {
-      p.x -= 2;
-
-      const top = p.y + PIPE_TOP.h;
-      const bottom = top + this.gap;
-
-      // Collision with pipes
-      if (
-        bird.x + bird.radius > p.x &&
-        bird.x - bird.radius < p.x + PIPE_TOP.w &&
-        (bird.y - bird.radius < top || bird.y + bird.radius > bottom)
-      ) {
-        state = "OVER";
-      }
-
-      // Score
-      if (!p.passed && p.x + PIPE_TOP.w < bird.x) {
-        score++;
-        p.passed = true;
-      }
-    });
-
-    this.list = this.list.filter(p => p.x + PIPE_TOP.w > 0);
-  },
-
-  draw() {
-    this.list.forEach(p => {
-      ctx.drawImage(sprite, PIPE_TOP.x, PIPE_TOP.y, PIPE_TOP.w, PIPE_TOP.h,
-        p.x, p.y, PIPE_TOP.w, PIPE_TOP.h);
-
-      ctx.drawImage(sprite, PIPE_BOT.x, PIPE_BOT.y, PIPE_BOT.w, PIPE_BOT.h,
-        p.x, p.y + PIPE_TOP.h + this.gap, PIPE_BOT.w, PIPE_BOT.h);
-    });
-  }
-};
-
-/* === GROUND === */
-let groundX = 0;
-
-function drawGround() {
-  groundX = (groundX - 2) % (GROUND.w / 2);
-
-  ctx.drawImage(sprite, GROUND.x, GROUND.y, GROUND.w, GROUND.h,
-    groundX, canvas.height - GROUND.h, GROUND.w, GROUND.h);
-
-  ctx.drawImage(sprite, GROUND.x, GROUND.y, GROUND.w, GROUND.h,
-    groundX + GROUND.w, canvas.height - GROUND.h, GROUND.w, GROUND.h);
-}
-
-/* === INPUT === */
-function handleInput() {
-  if (state === "READY") {
-    state = "PLAY";
-  } else if (state === "PLAY") {
-    bird.flap();
-  } else if (state === "OVER") {
-    location.reload();
-  }
-}
-
-canvas.addEventListener("click", handleInput);
-document.addEventListener("keydown", e => {
-  if (e.code === "Space") handleInput();
-});
-
-/* === LOOP === */
-function loop() {
-  frames++;
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  // Background
-  ctx.drawImage(sprite, BG.x, BG.y, BG.w, BG.h, 0, 0, canvas.width, canvas.height);
-
-  pipes.update();
-  pipes.draw();
-
-  bird.update();
-  bird.draw();
-
-  drawGround();
-
-  // Ground collision
-  if (bird.y + bird.radius > canvas.height - GROUND.h) {
-    state = "OVER";
-  }
-
-  if (state === "READY") {
-    ctx.drawImage(sprite, GET_READY.x, GET_READY.y, GET_READY.w, GET_READY.h,
-      52, 150, GET_READY.w, GET_READY.h);
-  }
-
-  if (state === "PLAY") {
-    ctx.fillStyle = "#fff";
-    ctx.font = "24px Arial";
-    ctx.fillText(score, canvas.width / 2 - 6, 50);
-  }
-
-  if (state === "OVER") {
-    ctx.drawImage(sprite, GAME_OVER.x, GAME_OVER.y, GAME_OVER.w, GAME_OVER.h,
-      48, 150, GAME_OVER.w, GAME_OVER.h);
-  }
-
-  requestAnimationFrame(loop);
-}
-
-sprite.onload = loop;
-</script>
+<div class="crop">
+  <iframe src="https://imagenated.github.io/flappy-bird/"></iframe>
+</div>
 
 </body>
 </html>
