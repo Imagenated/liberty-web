@@ -49,45 +49,34 @@ const ctx = canvas.getContext("2d");
 const sprite = new Image();
 sprite.src = "flappy.png";
 
-/* ========= SPRITE COORDS ========= */
-
-// Bird frames
+/* === SPRITES === */
 const BIRD = [
   {x: 3,  y: 491},
   {x: 37, y: 491},
   {x: 71, y: 491}
 ];
 
-// Backgrounds
-const BG_DAY   = {x: 0,   y: 0,   w: 288, h: 512};
-
-// Ground
+const BG = {x: 0, y: 0, w: 288, h: 512};
 const GROUND = {x: 292, y: 0, w: 336, h: 112};
 
-// Pipes
 const PIPE_TOP = {x: 112, y: 646, w: 52, h: 320};
 const PIPE_BOT = {x: 168, y: 646, w: 52, h: 320};
 
-// UI
 const GET_READY = {x: 295, y: 59, w: 184, h: 50};
 const GAME_OVER = {x: 395, y: 59, w: 192, h: 42};
-const SCORE_PANEL = {x: 6, y: 518, w: 226, h: 116};
 
-/* ========= GAME STATE ========= */
-
-let state = "READY"; // READY, PLAY, OVER
-
+/* === GAME STATE === */
+let state = "READY";
 let frames = 0;
 let score = 0;
 
-/* ========= BIRD ========= */
-
+/* === BIRD === */
 const bird = {
   x: 60,
   y: 150,
   vy: 0,
-  gravity: 0.25,
-  jump: 4.6,
+  gravity: 0.35,
+  jump: 5.5,
   radius: 12,
   frame: 0,
   rotation: 0,
@@ -105,7 +94,7 @@ const bird = {
       this.y += this.vy;
 
       if (this.vy >= this.jump) {
-        this.rotation = Math.min(Math.PI / 2, this.rotation + 0.04);
+        this.rotation = Math.PI / 2;
       } else {
         this.rotation = -0.3;
       }
@@ -124,8 +113,7 @@ const bird = {
   }
 };
 
-/* ========= PIPES ========= */
-
+/* === PIPES === */
 const pipes = {
   list: [],
   gap: 100,
@@ -144,10 +132,10 @@ const pipes = {
     this.list.forEach(p => {
       p.x -= 2;
 
-      // Collision
       const top = p.y + PIPE_TOP.h;
-      const bottom = p.y + PIPE_TOP.h + this.gap;
+      const bottom = top + this.gap;
 
+      // Collision with pipes
       if (
         bird.x + bird.radius > p.x &&
         bird.x - bird.radius < p.x + PIPE_TOP.w &&
@@ -177,31 +165,20 @@ const pipes = {
   }
 };
 
-/* ========= GROUND ========= */
-
+/* === GROUND === */
 let groundX = 0;
 
 function drawGround() {
   groundX = (groundX - 2) % (GROUND.w / 2);
+
   ctx.drawImage(sprite, GROUND.x, GROUND.y, GROUND.w, GROUND.h,
     groundX, canvas.height - GROUND.h, GROUND.w, GROUND.h);
+
+  ctx.drawImage(sprite, GROUND.x, GROUND.y, GROUND.w, GROUND.h,
+    groundX + GROUND.w, canvas.height - GROUND.h, GROUND.w, GROUND.h);
 }
 
-/* ========= UI ========= */
-
-function drawScore() {
-  ctx.fillStyle = "#fff";
-  ctx.font = "24px Arial";
-  ctx.fillText(score, canvas.width / 2, 50);
-}
-
-/* ========= INPUT ========= */
-
-canvas.addEventListener("click", handleInput);
-document.addEventListener("keydown", e => {
-  if (e.code === "Space") handleInput();
-});
-
+/* === INPUT === */
 function handleInput() {
   if (state === "READY") {
     state = "PLAY";
@@ -212,13 +189,18 @@ function handleInput() {
   }
 }
 
-/* ========= LOOP ========= */
+canvas.addEventListener("click", handleInput);
+document.addEventListener("keydown", e => {
+  if (e.code === "Space") handleInput();
+});
 
+/* === LOOP === */
 function loop() {
   frames++;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  ctx.drawImage(sprite, BG_DAY.x, BG_DAY.y, BG_DAY.w, BG_DAY.h, 0, 0, canvas.width, canvas.height);
+  // Background
+  ctx.drawImage(sprite, BG.x, BG.y, BG.w, BG.h, 0, 0, canvas.width, canvas.height);
 
   pipes.update();
   pipes.draw();
@@ -228,13 +210,20 @@ function loop() {
 
   drawGround();
 
+  // Ground collision
+  if (bird.y + bird.radius > canvas.height - GROUND.h) {
+    state = "OVER";
+  }
+
   if (state === "READY") {
     ctx.drawImage(sprite, GET_READY.x, GET_READY.y, GET_READY.w, GET_READY.h,
       52, 150, GET_READY.w, GET_READY.h);
   }
 
   if (state === "PLAY") {
-    drawScore();
+    ctx.fillStyle = "#fff";
+    ctx.font = "24px Arial";
+    ctx.fillText(score, canvas.width / 2 - 6, 50);
   }
 
   if (state === "OVER") {
