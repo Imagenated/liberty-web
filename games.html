@@ -39,24 +39,30 @@
     background: #e5e7eb;
   }
 
-  /* Crop container (acts like a mask) */
+  /* Outer scale wrapper */
+  .scale {
+    transform: scale(1.25); /* 👈 makes it bigger */
+    transform-origin: center;
+  }
+
+  /* Crop window */
   .crop {
-    width: 288px;   /* exact Flappy Bird width */
-    height: 512px;  /* exact Flappy Bird height */
-    border-radius: 18px;
+    width: 288px;
+    height: 520px; /* 👈 slightly taller */
+    border-radius: 22px;
     overflow: hidden;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.18);
     background: #000;
   }
 
-  /* Iframe scaled and positioned */
+  /* Iframe positioning */
   iframe {
-    width: 400px;
-    height: 700px;
+    width: 420px;
+    height: 740px;
     border: none;
 
-    /* Center the game inside the crop */
-    transform: translate(-56px, -94px);
+    /* 👇 fine-tuned crop */
+    transform: translate(-66px, -120px);
   }
 </style>
 </head>
@@ -65,8 +71,10 @@
 
 <a href="tools.html" class="home-btn">← Home</a>
 
-<div class="crop">
-  <iframe src="https://imagenated.github.io/flappy-bird/"></iframe>
+<div class="scale">
+  <div class="crop">
+    <iframe src="https://imagenated.github.io/flappy-bird/"></iframe>
+  </div>
 </div>
 
 </body>
