@@ -39,7 +39,7 @@
     background: #e5e7eb;
   }
 
-  /* Scale wrapper (keeps size you liked) */
+  /* Scale wrapper (size you liked) */
   .scale {
     transform: scale(1.25);
     transform-origin: center;
@@ -48,21 +48,21 @@
   /* Crop window */
   .crop {
     width: 288px;
-    height: 500px;              /* 👈 slightly shorter */
-    border-radius: 26px;        /* 👈 smoother phone corners */
+    height: 512px;           /* ← back to exact game height */
+    border-radius: 24px;
     overflow: hidden;
     box-shadow: 0 25px 50px rgba(0,0,0,0.18);
-    background: #6ec6d0;        /* sky color fallback */
+    background: #000;
   }
 
-  /* Iframe positioning */
+  /* Iframe positioning — SAFE VALUES */
   iframe {
     width: 420px;
-    height: 740px
+    height: 740px;
     border: none;
 
-    /* 👇 final perfect alignment */
-    transform: translate(-66px, -132px);
+    /* 👇 corrected position (no blue screen) */
+    transform: translate(-66px, -104px);
   }
 </style>
 </head>
@@ -79,4 +79,3 @@
 
 </body>
 </html>
-
