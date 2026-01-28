@@ -39,30 +39,30 @@
     background: #e5e7eb;
   }
 
-  /* Outer scale wrapper */
+  /* Scale wrapper (keeps size you liked) */
   .scale {
-    transform: scale(1.25); /* 👈 makes it bigger */
+    transform: scale(1.25);
     transform-origin: center;
   }
 
   /* Crop window */
   .crop {
     width: 288px;
-    height: 520px; /* 👈 slightly taller */
-    border-radius: 22px;
+    height: 500px;              /* 👈 slightly shorter */
+    border-radius: 26px;        /* 👈 smoother phone corners */
     overflow: hidden;
     box-shadow: 0 25px 50px rgba(0,0,0,0.18);
-    background: #000;
+    background: #6ec6d0;        /* sky color fallback */
   }
 
   /* Iframe positioning */
   iframe {
     width: 420px;
-    height: 740px;
+    height: 740px
     border: none;
 
-    /* 👇 fine-tuned crop */
-    transform: translate(-66px, -120px);
+    /* 👇 final perfect alignment */
+    transform: translate(-66px, -132px);
   }
 </style>
 </head>
@@ -79,3 +79,4 @@
 
 </body>
 </html>
+
